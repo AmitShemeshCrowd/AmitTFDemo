@@ -3,22 +3,21 @@ resource "aws_instance" "ec2_demo" {
   ami               = "ami-03f38e546e3dc59e1"
   instance_type     = var.ec2_instance_type
   availability_zone = var.availability_zone.a
-  associate_public_ip_address = true
-  subnet_id = aws_subnet.main.id
-  security_groups = [aws_security_group.main.id]
-  user_data = <<EOF
-      #!/bin/bash
-      # Use this for your user data (script from top to bottom)
-      # install httpd (Linux 2 version)
-      yum update -y
-      yum install -y httpd
-      systemctl start httpd
-      systemctl enable httpd
-      echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
-EOF
+  subnet_id     = aws_subnet.main.id
+  vpc_security_group_ids = [aws_security_group.main.id]
+  user_data     = <<-EOF
+                    #!/bin/bash
+                    # Use this for your user data (script from top to bottom)
+                    # Install httpd (Linux 2 version)
+                    sudo yum update -y
+                    sudo yum install -y httpd
+                    sudo systemctl start httpd
+                    sudo systemctl enable httpd
+                    sudo bash -c 'echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html'
+                  EOF
 
   tags = {
-    Name = "Demo-${random_string.id.result}"
+    Name = "Demo"
   }
 #  lifecycle {
 #    prevent_destroy = true
