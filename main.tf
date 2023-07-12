@@ -3,4 +3,3 @@ resource "random_string" "id" {
   special = false
   upper   = false
 }
-
