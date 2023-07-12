@@ -1,5 +1,5 @@
 resource "random_string" "id" {
-  length  = 10
+  length  = 12
   special = false
   upper   = false
 }
